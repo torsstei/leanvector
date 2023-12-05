@@ -15,5 +15,5 @@
 # limitations under the License.
 # ------------------------------------------------------------------------------
 
-__version__ = "0.1.0"
-from leanvector import VectorDataEngine
+__version__ = "0.1.2"
+from .leanvector import VectorDataEngine, VectorIndexes
