@@ -39,6 +39,7 @@ class VectorDataEngine:
                  s3endpoint: str,
                  s3accesskey: str,
                  s3secretkey: str,
+                 vectors:np.array = None,
                  fvecs_file: str = None):
         self._vector_project = vector_project
         self._prefix = "vector_data/" + self._vector_project.replace(" ", "_") + "/"
@@ -64,15 +65,23 @@ class VectorDataEngine:
             VectorIndexes.IVFPQ: None
         }
 
-        if fvecs_file:
-            self._s3resource.Object(self._bucket, self._prefix + "data.fvecs").put(Body=open(fvecs_file, 'rb'))
+        if vectors is not None:
+            self._vector_data = vectors
+            self._vector_data_loaded = True
+        if fvecs_file is not None:
+            tmp = np.fromfile(fvecs_file, dtype='int32')
+            self._vector_data = tmp.reshape(-1, tmp[0] + 1)[:, 1:].copy().view('float32')
+            self._vector_data_loaded = True
+        if self._vector_data is not None:
+            vectorfile = "./.VectorDataEngine/" + self._prefix + "vectors.npy"
+            np.save(vectorfile, self._vector_data)
+            self._s3resource.Object(self._bucket, self._prefix + "vectors.npy").put(Body=open(vectorfile, 'rb'))
 
     def _load_vector_data(self):
         if not self._vector_data_loaded:
-            tmpfile = "./.VectorDataEngine/" + self._prefix + "data.fvecs"
-            self._s3client.download_file(self._bucket, self._prefix + "data.fvecs", tmpfile)
-            tmp = np.fromfile(tmpfile, dtype='int32')
-            self._vector_data = tmp.reshape(-1, tmp[0] + 1)[:, 1:].copy().view('float32')
+            vectorfile = "./.VectorDataEngine/" + self._prefix + "vectors.npy"
+            self._s3client.download_file(self._bucket, self._prefix + "vectors.npy", vectorfile)
+            self._vector_data = np.load(vectorfile)
             self._vector_data_loaded = True
 
     def get_vector_array(self):

@@ -13,6 +13,7 @@ include
 pip-selfcheck.json
 leanvector/test_credentials.py
 ibmleanvector/test_credentials.py
+leanvector/sift*
 venv
 
 ### Build and distribution
