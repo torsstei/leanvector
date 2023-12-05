@@ -4,6 +4,7 @@ os.chdir("leanvector")
 from leanvector import VectorDataEngine, VectorIndexes
 import test_credentials  # noqa
 import numpy as np
+import datetime
 
 """
 from contextlib import closing
@@ -18,116 +19,7 @@ tar = tarfile.open('siftsmall.tar.gz', "r:gz")
 tar.extractall()
 """
 
-vectors = np.array(
-       [[ 0.,  16.,  35.,   5.,  32.,  31.,  14.,  10.,  11.,  78.,  55.,
-         10.,  45.,  83.,  11.,   6.,  14.,  57., 102.,  75.,  20.,   8.,
-          3.,   5.,  67.,  17.,  19.,  26.,   5.,   0.,   1.,  22.,  60.,
-         26.,   7.,   1.,  18.,  22.,  84.,  53.,  85., 119., 119.,   4.,
-         24.,  18.,   7.,   7.,   1.,  81., 106., 102.,  72.,  30.,   6.,
-          0.,   9.,   1.,   9., 119.,  72.,   1.,   4.,  33., 119.,  29.,
-          6.,   1.,   0.,   1.,  14.,  52., 119.,  30.,   3.,   0.,   0.,
-         55.,  92., 111.,   2.,   5.,   4.,   9.,  22.,  89.,  96.,  14.,
-          1.,   0.,   1.,  82.,  59.,  16.,  20.,   5.,  25.,  14.,  11.,
-          4.,   0.,   0.,   1.,  26.,  47.,  23.,   4.,   0.,   0.,   4.,
-         38.,  83.,  30.,  14.,   9.,   4.,   9.,  17.,  23.,  41.,   0.,
-          0.,   2.,   8.,  19.,  25.,  23.,   1.],
-       [ 14.,  35.,  19.,  20.,   3.,   1.,  13.,  11.,  16., 119.,  85.,
-          5.,   0.,   5.,  24.,  26.,   0.,  27., 119.,  13.,   3.,   9.,
-         19.,   0.,   0.,  11.,  73.,   9.,  10.,   3.,   5.,   0.,  92.,
-         38.,  17.,  39.,  32.,   7.,  15.,  47., 119., 111.,  53.,  27.,
-          8.,   0.,   0.,  52.,   5.,   7.,  63.,  51.,  84.,  43.,   0.,
-          1.,  12.,   8.,  20.,  25.,  33.,  30.,   2.,   5.,  59.,  23.,
-         25., 105.,  25.,  23.,   5.,  18., 119.,  15.,   7.,  13.,  14.,
-         19.,  95., 119.,   5.,   0.,   0.,  14., 119., 103.,  93.,  39.,
-         11.,   4.,   1.,   4.,  13.,  43.,  62.,  18.,   2.,   0.,   0.,
-          8.,  44.,  65.,   7.,   1.,   3.,   0.,   0.,   1.,  19.,  45.,
-         94.,  95.,  13.,   7.,   0.,   0.,   3.,  52., 119.,  52.,  15.,
-          2.,   0.,   0.,   0.,  11.,  21.,  33.],
-       [  0.,   1.,   5.,   3.,  44.,  40.,  20.,  14.,  10., 100.,  63.,
-          7.,  44.,  47.,   9.,   6.,   7.,  70., 114.,  82.,  11.,   5.,
-          3.,   4.,  30.,  16.,  33.,  55.,   5.,   0.,   0.,   4., 104.,
-         46.,  12.,   2.,   8.,   5.,  40.,  66.,  85., 117., 117.,   5.,
-          7.,   3.,   1.,   6.,   0.,  62., 108.,  86.,  51.,  22.,   2.,
-          0.,   7.,   1.,  15., 117.,  95.,   2.,   1.,  12., 117.,  33.,
-          4.,   2.,   0.,   0.,   3.,  56., 117.,  20.,   3.,   0.,   0.,
-         40.,  78.,  93.,   0.,   1.,   2.,   5.,  24.,  86.,  96.,  16.,
-          0.,   0.,   0.,  77.,  75.,  10.,  19.,   7.,  22.,   8.,  12.,
-          7.,   0.,   0.,   3.,  44.,  35.,  11.,   2.,   0.,   0.,  10.,
-         55., 117.,  17.,   9.,  12.,   2.,   1.,  14.,  34.,  31.,   0.,
-          1.,   6.,  10.,  12.,   4.,  23.,  10.],
-       [ 12.,  47.,  14.,  25.,   2.,   3.,   4.,   7.,  14., 122.,  90.,
-          7.,   0.,   0.,   6.,  14.,   0.,  24., 122.,  22.,   2.,   4.,
-          6.,   0.,   0.,  10.,  93.,  10.,   6.,   6.,   0.,   0., 122.,
-         31.,   9.,  23.,  19.,   9.,   8.,  56., 122., 100.,  29.,  19.,
-          3.,   0.,   0.,  25.,   3.,   9.,  43.,  59.,  76.,  32.,   0.,
-          0.,   8.,   6.,  10.,   7.,  24.,  58.,   1.,   1.,  81.,  23.,
-         32.,  68.,  14.,  19.,  10.,  23., 122.,  13.,   2.,   1.,   4.,
-          9.,  86., 122.,   3.,   0.,   0.,   8., 122.,  95.,  68.,  30.,
-          9.,   2.,   0.,   2.,  26.,  50.,  44.,  13.,   0.,   0.,   0.,
-          3.,  12.,  82.,  18.,   7.,   6.,   0.,   0.,   0.,   2.,  20.,
-        112., 122.,   6.,   5.,   1.,   0.,   3.,  69., 122.,  43.,  15.,
-          1.,   0.,   0.,   0.,  27.,  29.,  21.],
-       [  1.,   1.,   0.,   0.,  14.,  16.,  30.,  50.,   2.,  40.,  81.,
-         25.,  65.,  37.,   7.,   3.,  13., 121., 121.,  15.,   2.,   4.,
-          4.,   6.,   0.,  11.,  71., 106.,   2.,   2.,   0.,   0.,  92.,
-         41.,   1.,   0.,   1.,   2.,  24.,  65., 121., 121., 110.,   5.,
-          2.,   1.,   1.,  12.,   6.,  96., 121.,  13.,   4.,   4.,   1.,
-          0.,   0.,   4.,  46., 118.,  46.,   9.,   0.,   0., 121.,  33.,
-          8.,   7.,   0.,   0.,   0.,  42., 121.,  20.,   0.,   0.,   0.,
-          2.,  33., 105.,  12.,   6.,   5.,   1.,   4.,  60., 107.,  18.,
-          0.,   0.,   0.,  15.,  37.,  37.,  30.,  15.,  21.,   2.,  12.,
-         16.,   3.,   0.,   0.,  23.,  40.,   7.,   8.,   0.,   0.,   2.,
-         57., 121.,  14.,   2.,   1.,   0.,   0.,  25.,  70.,  48.,   0.,
-          0.,   2.,   0.,   1.,   4.,  28.,  34.],
-       [ 48.,  69.,   9.,   6.,   2.,   3.,   7.,  25.,  64., 130.,  33.,
-          4.,   0.,   0.,   0.,   9.,   1.,  22.,  66.,  44.,  14.,   6.,
-          0.,   0.,   1.,   5.,   7.,   4.,  19.,  40.,   1.,   0., 130.,
-         17.,  15.,  16.,  11.,   6.,   9.,  70., 130.,  18.,   2.,   1.,
-          0.,   0.,   5.,  51.,  12.,   3.,   5.,  32., 116.,  17.,  11.,
-          5.,   2.,   1.,   0.,  10.,  80.,  47.,   8.,   0.,  68.,  21.,
-         47.,  51.,   9.,  23.,  12.,  18., 108.,   6.,   1.,   0.,   0.,
-         11., 130., 130.,   1.,   0.,   0.,   1.,  43.,  92., 130.,  48.,
-          6.,   0.,   0.,   2.,  44., 130.,  48.,  11.,   0.,   0.,   0.,
-          4.,  16.,  90.,  10.,   0.,   7.,   1.,   0.,   1.,   5.,  33.,
-         87.,  84.,   5.,  13.,   3.,   0.,   0.,  35., 130.,  31.,  20.,
-          8.,   2.,   0.,   0.,  30.,  26.,   4.],
-       [  0.,  42.,  55.,   4.,  16.,  26.,  24.,  10.,   1.,  91., 100.,
-         12.,  42.,  70.,   8.,   0.,  17.,  48., 111.,  73.,  19.,   5.,
-          2.,   2.,  68.,  23.,  13.,  15.,   6.,   2.,   1.,  27.,  98.,
-         32.,   3.,   1.,   5.,  22.,  93.,  48., 111., 111., 109.,   4.,
-         14.,  32.,  33.,  24.,   1.,  42.,  83., 108.,  98.,  43.,  28.,
-          1.,  25.,   1.,   4.,  83.,  67.,   5.,   4.,  48., 111.,  41.,
-         15.,   2.,   0.,   0.,   7.,  55., 105.,  18.,   3.,   0.,   0.,
-         34., 105., 111.,   8.,   2.,   3.,  13.,  29.,  61.,  78.,  17.,
-          8.,   0.,   0.,  48.,  61.,  40.,  20.,   7.,  23.,  45.,   9.,
-          1.,   0.,   0.,   0.,   9.,  30.,  29.,  13.,  11.,   8.,   1.,
-          6.,  57.,   8.,   2.,   4.,  19.,  18.,  29.,  21.,  64.,   0.,
-          0.,   2.,  18.,  44.,  45.,  11.,   2.],
-      [  8., 35., 11., 5., 13., 4., 4., 4., 9., 41., 110.,
-         50., 8., 0., 3., 4., 20., 47., 110., 15., 3., 3.,
-         1., 14., 5., 18., 50., 23., 6., 6., 4., 4., 79.,
-         56., 7., 2., 5., 2., 6., 22., 107., 110., 110., 43.,
-         1., 0., 0., 37., 0., 26., 110., 110., 49., 26., 3.,
-         0., 7., 6., 21., 52., 31., 26., 26., 15., 110., 38.,
-         1., 13., 18., 2., 4., 33., 110., 78., 13., 14., 41.,
-         34., 110., 102., 7., 2., 12., 83., 59., 62., 91., 61.,
-         7., 2., 9., 68., 75., 28., 2., 8., 86., 9., 13.,
-         15., 11., 0., 6., 33., 52., 14., 12., 50., 86., 18.,
-         56., 63., 43., 38., 15., 15., 13., 4., 34., 68., 3.,
-         0., 2., 24., 51., 17., 4., 7.],
-      [  21., 13., 18., 11., 14., 6., 4., 14., 39., 54., 52.,
-         10., 8., 14., 5., 2., 23., 76., 65., 10., 11., 23.,
-         3., 0., 6., 10., 17., 5., 7., 21., 20., 13., 63.,
-         7., 25., 13., 4., 12., 13., 112., 109., 112., 63., 21.,
-         2., 1., 1., 40., 25., 43., 41., 98., 112., 49., 7.,
-         5., 18., 57., 24., 14., 62., 49., 34., 29., 100., 14.,
-         3., 1., 5., 14., 7., 92., 112., 14., 28., 5., 9.,
-         34., 79., 112., 18., 15., 20., 29., 75., 112., 112., 50.,
-         6., 61., 45., 13., 33., 112., 77., 4., 18., 17., 5.,
-         3., 4., 5., 4., 15., 28., 4., 6., 1., 7., 33.,
-         86., 71., 3., 8., 5., 4., 16., 72., 83., 10., 5.,
-         40., 3., 0., 1., 51., 36., 3.]], dtype=np.float32)
-
+vector_data = np.random.uniform(low=0.0, high=256.0, size=(1000,128))
 
 print("Initializing VectorDataEngine...")
 vector_engine = VectorDataEngine(vector_project='build test',
@@ -135,7 +27,45 @@ vector_engine = VectorDataEngine(vector_project='build test',
                                  s3accesskey=test_credentials.accesskey,
                                  s3secretkey=test_credentials.secretkey,
                                  bucket=test_credentials.bucket,
-                                 vectors=vectors)
+                                 vectors=vector_data)
 
 xb = vector_engine.get_vector_array()
 print(xb[:2])
+
+vector_engine.create_index(VectorIndexes.FLAT)
+vector_engine.create_index(VectorIndexes.LSH)
+vector_engine.create_index(VectorIndexes.HNSW)
+vector_engine.create_index(VectorIndexes.IVFFLAT)
+vector_engine.create_index(VectorIndexes.PQ)
+vector_engine.create_index(VectorIndexes.IVFPQ)
+
+query = np.random.uniform(low=0.0, high=256.0, size=(1,128))
+before_time = datetime.datetime.now()
+D, I = vector_engine.search(query, VectorIndexes.FLAT)
+print("Flat Index Search time: {} milliseconds".format((datetime.datetime.now() - before_time).total_seconds()*1000))
+baseline = I[0].tolist()
+
+before_time = datetime.datetime.now()
+D, I = vector_engine.search(query, VectorIndexes.LSH)
+print("LSH Index Search time: {} milliseconds".format((datetime.datetime.now() - before_time).total_seconds()*1000))
+print("LSH Index Recall Rate: {} %".format(np.array(baseline)[np.in1d(baseline, I).tolist()].size / np.array(baseline).size * 100))
+
+before_time = datetime.datetime.now()
+D, I = vector_engine.search(query, VectorIndexes.HNSW)
+print("HNSW Index Search time: {} milliseconds".format((datetime.datetime.now() - before_time).total_seconds()*1000))
+print("HNSW Index Recall Rate: {} %".format(np.array(baseline)[np.in1d(baseline, I).tolist()].size / np.array(baseline).size * 100))
+
+before_time = datetime.datetime.now()
+D, I = vector_engine.search(query, VectorIndexes.IVFFLAT)
+print("IVFFLAT Index Search time: {} milliseconds".format((datetime.datetime.now() - before_time).total_seconds()*1000))
+print("IVFFLAT Index Recall Rate: {} %".format(np.array(baseline)[np.in1d(baseline, I).tolist()].size / np.array(baseline).size * 100))
+
+before_time = datetime.datetime.now()
+D, I = vector_engine.search(query, VectorIndexes.PQ)
+print("PQ Index Search time: {} milliseconds".format((datetime.datetime.now() - before_time).total_seconds()*1000))
+print("PQ Index Recall Rate: {} %".format(np.array(baseline)[np.in1d(baseline, I).tolist()].size / np.array(baseline).size * 100))
+
+before_time = datetime.datetime.now()
+D, I = vector_engine.search(query, VectorIndexes.IVFPQ)
+print("IVFPQ Index Search time: {} milliseconds".format((datetime.datetime.now() - before_time).total_seconds()*1000))
+print("IVFPQ Index Recall Rate: {} %".format(np.array(baseline)[np.in1d(baseline, I).tolist()].size / np.array(baseline).size * 100))
