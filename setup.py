@@ -1,5 +1,6 @@
 # ------------------------------------------------------------------------------
-# Copyright IBM Corp. 2018
+# Torsten Steinbach 2023
+# torsten@steinbachnet.de
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,7 +54,7 @@ setup(
     install_requires=[
         "boto3",
         "faiss-cpu",
-        "cosaccess",
+        "numpy"
     ],
     description="Python library for building serverless vector indexing and search solutions",  # noqa
     long_description=long_description,

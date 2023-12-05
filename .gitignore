@@ -11,7 +11,8 @@ bin
 lib
 include
 pip-selfcheck.json
-test_credentials.py
+leanvector/test_credentials.py
+ibmleanvector/test_credentials.py
 venv
 
 ### Build and distribution
@@ -28,3 +29,4 @@ __pycache__
 .pytest_cache
 .venv
 .idea
+.VectorDataEngine
