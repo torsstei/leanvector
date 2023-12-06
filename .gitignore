@@ -4,6 +4,7 @@
 *.EGG
 *.EGG-INFO
 *.DS_Store
+~$*
 
 ### Local Python env and test
 bin
@@ -31,3 +32,4 @@ __pycache__
 .venv
 .idea
 .VectorDataEngine
+.ipynb_checkpoints
