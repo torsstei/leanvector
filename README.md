@@ -30,7 +30,7 @@ D, I = vector_engine.search(<your query vector as numpy array>, VectorIndexes.HN
 ```
 
 ## Demo
-You can find a fully reproducible end-to-end demo in the [leanvector.ipynb](leanvector.ipynb) notebook here in this repository.
+You can find a fully reproducible end-to-end demo in the [leanvector_demo.ipynb](leanvector_demo.ipynb) notebook here in this repository.
 
 You can run these notebooks yourself using Jupyter as follows:
 
