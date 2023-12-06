@@ -52,7 +52,7 @@ jupyter notebook
 
 ```
 
-## CosAccessManager method list
+## VectorDataEngine method list
 ### Initialization
  * `VectorDataEngine(vector_project, bucket, s3endpoint, s3accesskey, s3secretkey, vectors = None, fvecs_file = None)` Constructor.
    * `vector_project`: You can store multiple vector data sets on the same S3 bucket in different sub folders identified by this vector project name
