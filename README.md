@@ -90,4 +90,4 @@ you can use the template file `leanvector/test_credentials.py.template`
 
 ### Packaging and publishing distribution
 1. Make sure to increase `version=...` in `setup.py` before creating a new package.
-2. Run `package.sh`. It will prompt for user and password that must be authorized for package `cosaccess` on pypi.org.
+2. Run `package.sh`. It will prompt for user and password that must be authorized for package `leanvector` on pypi.org.
